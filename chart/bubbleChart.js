@@ -1,7 +1,7 @@
 import { data } from "../data/locationDataValue.js";
 import { dimensions, usaProjection } from "../utility.js";
 
-async function bubbleChart() {
+ function bubbleChart() {
   let index = 10;
   const rScale = d3
     .scalePow()
@@ -25,7 +25,9 @@ async function bubbleChart() {
     .attr("r", (d) => {
       return rScale(d.data[index].total);
     });
-
+  /********************************
+   * * Approach 1: d3.transition
+   ********************************/
   // const onScroll = (year) =>
   //   bubbles.transition().attr("r", (d) => {
   //     return rScale(d.data[year].total);
@@ -42,40 +44,69 @@ async function bubbleChart() {
   //   },
   // });
 
-
-
-  let onScroll = (year) => {
-    // Create a new timeline
-    let tl = gsap.timeline();
-    // Add tweens to the timeline for each bubble
-    bubbles.each((d, i, nodes) => {
-
-      tl.to(nodes[i], {
-        duration: 0.2,
-        attr: { r: rScale(d.data[year].total) },
-        ease: "power1.out",
-      });
-    });
-    return tl;
-  };
-
+  /********************************
+   * * Approach 2: one master timeline for all
+   ********************************/
   let masterTL = gsap.timeline({
     scrollTrigger: {
       trigger: "#bubble-map",
-      markers: true,
+      // markers: true,
       start: "top top",
       end: `+=${dimensions.height}px`,
       pin: true,
-      // pingSpacing: true,
       scrub: true,
-      onUpdate: (sc) => {
-        let newIndex = parseInt(Math.round(sc.progress * 10));
-        if (newIndex !== index) {
-          index = newIndex;
-          masterTL.add(onScroll(index));
-        }
-      },
+     
     },
   });
+
+  bubbles.each((d, i, nodes) => {
+    d.data.forEach((yearData, yearIndex) => {
+      masterTL.to(
+        nodes[i],
+        {
+          attr: { r: rScale(yearData.total) },
+          ease: "power1.out",
+        },
+        yearIndex / 10 // We set each transition to start at the corresponding progress point.
+      );
+    });
+  });
+  /********************************
+   * * Approach 3: one  timeline for each circle
+   ********************************/
+  // let timelines = [];
+
+  // bubbles.each((d, i, nodes) => {
+  //   // Create a timeline for each bubble
+  //   let tl = gsap.timeline({ paused: true });
+
+  //   // Add to each timeline the transitions of the radius for each year
+  //   d.data.forEach((yearData, yearIndex) => {
+  //     tl.to(
+  //       nodes[i],
+  //       {
+  //         attr: { r: rScale(yearData.total) },
+  //         ease: "power1.out",
+  //       },
+
+  //     ); // We set each transition to start at the corresponding progress point.
+  //   });
+
+  //   timelines.push(tl);
+  // });
+  // ScrollTrigger.create({
+  //   trigger: "#bubble-map",
+  //   markers: true,
+  //   start: "top top",
+  //   end: `+=${dimensions.height}px`,
+  //   pin: true,
+  //   scrub: true,
+  //   onUpdate: (sc) => {
+  //     let progress = sc.progress;
+  //     // Update the progress of each individual timeline
+  //     timelines.forEach((tl) => tl.progress(progress));
+  //   },
+  // });
+
 }
 bubbleChart();

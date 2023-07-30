@@ -2,6 +2,7 @@
   position: relative;
   width: 100%;
   height: 200vh;
+  overflow: hidden;
 }
 /* ************************************** */
 /* *************State Lable *************** */
@@ -35,6 +36,39 @@
   pointer-events: none;
 }
 
+#bubble-map-text-chunks {
+  position: absolute;
+  width: 340px;
+  left: 50%;
+  bottom: 40%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+  transition: opacity 0.5s linear;
+}
+/* ************************************** */
+/* *************Year Label *************** */
+/* ************************************** */
+#bubble-map-text-chunks {
+  position: absolute;
+  width: 340px;
+  left: 50%;
+  bottom: 40%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.5s linear;
+}
+#bubble-map-text-chunks.is-active {
+  opacity: 1;
+}
+#bubble-map-text-chunks h4 {
+  font-family: "nyt-franklin", arial, helvetica, sans-serif;
+  font-size: 40px;
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.7);
+  margin-bottom: 10px;
+}
 /* ************************************** */
 /* *************Scroll Prompt at the bottom*************** */
 /* ************************************** */
@@ -47,7 +81,7 @@
   }
 }
 #scroll-prompt {
-  position: absolute;
+  position: fixed;
   left: 50%;
   bottom: 40px;
   font-size: 15px;
