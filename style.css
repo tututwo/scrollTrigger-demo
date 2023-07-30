@@ -1,0 +1,75 @@
+.bubble-map-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200vh;
+}
+/* ************************************** */
+/* *************State Lable *************** */
+/* ************************************** */
+.state-label-container text {
+  transition: opacity 0.5s linear;
+  font-size: 10px;
+  text-transform: uppercase;
+  fill: #ddd;
+  text-anchor: middle;
+  vertical-align: middle;
+}
+/* ************************************** */
+/* *************Map *************** */
+/* ************************************** */
+.usa-map-container path {
+  fill: #fff;
+  stroke: #ddd;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+/* ************************************** */
+/* *************Circle *************** */
+/* ************************************** */
+.bubbles-container circle {
+  fill: #ffb727;
+  fill-opacity: 0.3;
+  stroke: #ffb727;
+  stroke-opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ************************************** */
+/* *************Scroll Prompt at the bottom*************** */
+/* ************************************** */
+@keyframes bouncy {
+  0% {
+    bottom: 40px;
+  }
+  100% {
+    bottom: 50px;
+  }
+}
+#scroll-prompt {
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  font-size: 15px;
+  font-family: "nyt-franklin", arial, helvetica, sans-serif;
+  font-weight: 500;
+  transform: translate(-50%, 0%);
+  color: rgba(0, 0, 0, 0.6);
+  animation-name: bouncy;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate-reverse;
+}
+#scroll-prompt:after {
+  content: " ";
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  top: calc(100% + 5px);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid rgba(0, 0, 0, 0.4);
+}

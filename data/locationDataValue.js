@@ -1,4 +1,4 @@
-export const locationContribs = [
+export const data = [
 	{
 		name: "New York, New York, United States",
 		coords: [

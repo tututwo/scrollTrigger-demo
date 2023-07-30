@@ -1,4 +1,4 @@
-export const contribs = [
+export const data = [
   {
     payee: null,
     coords: [144.9630576, -37.8136276],
