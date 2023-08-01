@@ -1,7 +1,7 @@
 import { data } from "../data/locationDataValue.js";
 import { dimensions, usaProjection } from "../utility.js";
 
- function bubbleChart() {
+function bubbleChart() {
   let index = 10;
   const rScale = d3
     .scalePow()
@@ -28,49 +28,48 @@ import { dimensions, usaProjection } from "../utility.js";
   /********************************
    * * Approach 1: d3.transition
    ********************************/
-  // const onScroll = (year) =>
-  //   bubbles.transition().attr("r", (d) => {
-  //     return rScale(d.data[year].total);
-  //   });
+  const onScroll = (year) =>
+    bubbles.transition().attr("r", (d) => {
+      return rScale(d.data[year].total);
+    });
 
-  // ScrollTrigger.create({
-  //   trigger: "#bubble-map",
-  //   start: "top top",
-  //   markers: true,
-  //   pin: true,
-  //   onUpdate: (sc) => {
-  //     const newIndex = parseInt(Math.round(sc.progress * 10));
-  //     onScroll(newIndex);
-  //   },
-  // });
+  ScrollTrigger.create({
+    trigger: "#bubble-map",
+    start: "top top",
+    markers: true,
+    pin: true,
+    onUpdate: (sc) => {
+      const newIndex = parseInt(Math.round(sc.progress * 10));
+      onScroll(newIndex);
+    },
+  });
 
   /********************************
    * * Approach 2: one master timeline for all
    ********************************/
-  let masterTL = gsap.timeline({
-    scrollTrigger: {
-      trigger: "#bubble-map",
-      // markers: true,
-      start: "top top",
-      end: `+=${dimensions.height}px`,
-      pin: true,
-      scrub: true,
-     
-    },
-  });
+  // let masterTL = gsap.timeline({
+  //   scrollTrigger: {
+  //     trigger: "#bubble-map",
+  //     // markers: true,
+  //     start: "top top",
+  //     end: `+=${dimensions.height}px`,
+  //     pin: true,
+  //     scrub: true,
+  //   },
+  // });
 
-  bubbles.each((d, i, nodes) => {
-    d.data.forEach((yearData, yearIndex) => {
-      masterTL.to(
-        nodes[i],
-        {
-          attr: { r: rScale(yearData.total) },
-          ease: "power1.out",
-        },
-        yearIndex / 10 // We set each transition to start at the corresponding progress point.
-      );
-    });
-  });
+  // bubbles.each((d, i, nodes) => {
+  //   d.data.forEach((yearData, yearIndex) => {
+  //     masterTL.to(
+  //       nodes[i],
+  //       {
+  //         attr: { r: rScale(yearData.total) },
+  //         ease: "power1.out",
+  //       },
+  //       yearIndex / 10 // We set each transition to start at the corresponding progress point.
+  //     );
+  //   });
+  // });
   /********************************
    * * Approach 3: one  timeline for each circle
    ********************************/
@@ -107,6 +106,37 @@ import { dimensions, usaProjection } from "../utility.js";
   //     timelines.forEach((tl) => tl.progress(progress));
   //   },
   // });
+  /********************************
+   * * Approach 4: Smart GSAP way
+   ********************************/
+  // let masterTL = gsap.timeline({
+  //   scrollTrigger: {
+  //     trigger: "#bubble-map",
+  //     start: "top top",
+  //     end: `+=${dimensions.height}px`,
+  //     pin: true,
+  //     scrub: true,
+  //     onUpdate: (sc) => {
+  //       let newIndex = parseInt(Math.round(sc.progress * 10));
+  //       if (newIndex !== index) {
+  //         index = newIndex;
+  //       }
+  //     },
+  //   },
+  // });
 
+  // masterTL.to(
+  //   ".bubbles-container circle",
+  //   {
+  //     attr: {
+  //       r: (i, node) => {
+  //         console.log(index);
+  //         return rScale(data[i].data[index].total);
+  //       },
+  //     },
+  //     ease: "none",
+  //   },
+  //   0
+  // );
 }
 bubbleChart();

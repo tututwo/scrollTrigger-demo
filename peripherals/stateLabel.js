@@ -15,22 +15,19 @@ function StateLabel() {
     .attr("opacity", 0);
   // what if this returns a timeline?
 
-  let tl = gsap.timeline();
-  stateLabelSelection.each((d, i, nodes) => {
-    tl.add(
-      gsap.to(nodes[i], {
-        duration: 1,
-        opacity: 1,
-        ease: "power1.out",
-      })
-    );
-  });
 
+  let tl = gsap.timeline();
+  tl.to(".state-label-container text", {
+    duration: 1,
+    opacity: 1,
+    ease: "power1.out",
+  });
+//TODO: 1.when I scroll to the top of the scroller element
   ScrollTrigger.create({
     trigger: "#bubble-map",
     // markers: true,
     start: "10px top",
-    end: "+=10px",
+    end: "+=10px",//end after scrolling 500px beyond the start
     scrub: true,
     animation: tl,
   });

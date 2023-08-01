@@ -34,6 +34,7 @@ function textChunk() {
     start: "top top",
     end: `+=${dimensions.height}px`,
     scrub: true,
+    // toggleClass: {targets: ".bubble-map-blurb", className: "is-active"}
     onEnter: () => {
       document.getElementById("bubble-map-text-chunks").classList.add("is-active");
     },
